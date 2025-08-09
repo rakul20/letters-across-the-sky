@@ -1,0 +1,98 @@
+<!-- index.html -->
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Letters Across the Sky</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+      </head>
+      
+    <body>
+        <section class="hero">
+          <div class="hero-content">
+            <h1 class="monsieur-la-doulaise-bold">Letters Across the Sky</h1>
+            <h3 class="monsieur-la-doulaise-subtitle">For the one whose voice crosses oceans…</h3>
+          </div>
+          <canvas id="stars"></canvas>
+        </section>
+
+        <section class="content">
+          <canvas id="hearts"></canvas>
+            
+            <div class="content-wrapper">
+              <h2 class="monsieur-la-doulaise-bold fade-in" style="color: black;">A Letter to You</h2>
+              <p class="fade-in">In the quiet moments, when the world fades away, I find myself thinking of you...</p>
+              <p class="fade-in">May these words carry my love across the miles...</p>
+            </div>
+            
+            <div class="content-footer">
+              <p class="monsieur-la-doulaise-signature fade-in">With all my love,</p>
+              <p class="monsieur-la-doulaise-signature fade-in">Your Serendipity</p>
+            </div>
+        </section>
+
+        <section class="letter-section" aria-label="Love letter envelope">
+          <div class="envelope-wrap">
+            <button class="envelope" id="envelope" aria-label="Open letter" aria-expanded="false" aria-controls="love-letter">
+              <!-- Top flap -->
+              <span class="flap" aria-hidden="true"></span>
+
+              <!-- Letter paper inside -->
+              <span class="paper" id="love-letter">
+                <div class="paper-inner">
+                  <p class="greeting monsieur-la-doulaise-regular">My love,</p>
+                  <p class="message">
+                    You’re the reason stars shine a little brighter in my sky. We only met twice, but somehow,
+                    that was enough for my heart to know. Across time zones and oceans, I’m still right beside you.
+                  </p>
+                  <p class="sign-off monsieur-la-doulaise-signature">— Your Serendipity</p>
+                </div>
+              </span>
+
+              <!-- Front of envelope (two triangles) -->
+              <span class="front" aria-hidden="true"></span>
+            </button>
+          </div>
+        </section>
+
+        <!-- <script>
+          document.addEventListener('click', () => {
+            const audio = document.getElementById('bg-music');
+            if (audio && audio.paused) {
+              audio.play().catch(err => console.log('Autoplay blocked:', err));
+            }
+          });
+        </script> -->
+
+        <script>
+          function enableMusicOnce() {
+            const audio = document.getElementById('bg-music');
+            if (audio && audio.paused) {
+              audio.play().catch(err => {
+                console.log('Autoplay still blocked:', err);
+              });
+            }
+            // Remove listeners after first interaction
+            ['click', 'touchstart', 'scroll', 'keydown'].forEach(event =>
+              document.removeEventListener(event, enableMusicOnce)
+            );
+          }
+
+          // Add event listeners for various types of user interaction
+          ['click', 'touchstart', 'scroll', 'keydown'].forEach(event =>
+            document.addEventListener(event, enableMusicOnce)
+          );
+        </script>
+
+        <audio id="bg-music" autoplay loop>
+          <source src="assets/audio/audio.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        
+        <script src="script.js"></script>
+      
+      </body>
+</html>
