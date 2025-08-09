@@ -1,276 +1,238 @@
-/* style.css */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body, html {
-    height: 100%;
-    font-family: 'Segoe UI', sans-serif;
-    overflow-x: hidden;
-  }
+/* -------------------------
+   Global / Base
+------------------------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .hero {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 1;
-  }
-  
-  .hero-content {
-    z-index: 2;
-    position: relative;
-    animation: fadeIn 3s ease-in-out;
-  }
-  
-  .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    letter-spacing: 2px;
-  }
-  
-  .hero p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-  }
-  
-  /* Background star canvas */
-  #stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    z-index: 0;
-    pointer-events: none; 
-  }
-  
-  /* Fade-in animation */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.78); }
-    to   { opacity: 1; transform: scale(1.2); }
-  }
-  
-  .monsieur-la-doulaise-regular {
-    font-family: "Monsieur La Doulaise", cursive;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 7.5rem;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
-                 0 0 20px rgba(255, 255, 255, 0.4);
-  }
+html, body {
+  height: 100%;
+  font-family: "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
 
-  .monsieur-la-doulaise-bold {
-      font-family: "Monsieur La Doulaise", cursive;
-      font-weight: 700;
-      font-style: normal;
-      font-size: 3.5rem;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
-                    0 0 20px rgba(255, 255, 255, 0.4);
-  }  
+/* -------------------------
+   Hero (Section 1)
+------------------------- */
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+}
 
-  .monsieur-la-doulaise-subtitle {
-      font-family: "Monsieur La Doulaise", cursive;
-      font-weight: 400;
-      font-style: normal;
-      font-size: 2.2rem;
-      color: #ddd;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-      margin-top: 1rem;
-      letter-spacing: 1px;
-      opacity: 0.9;
-    }
+.hero-content {
+  position: relative;
+  z-index: 2;
+  animation: fadeIn 3s ease-in-out;
+}
 
-    /* === Section 2: Letter Content Animation === */
+.hero h1 { font-size: 3rem; margin-bottom: 1rem; letter-spacing: 2px; }
+.hero p  { font-size: 1.2rem; opacity: 0.8; }
 
-  .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 1.5s ease-in-out 0.5s;
-  }
+/* Star canvas background (fixed behind everything) */
+#stars {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  z-index: 0;
+  pointer-events: none;
+}
 
-  .fade-in.animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* -------------------------
+   Typography helpers
+------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.78); }
+  to   { opacity: 1; transform: scale(1.2); }
+}
 
-  .content {
-    padding: 100px 20px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
-    background: rgb(241, 191, 200);
-    color: #000000;
-    min-height: 100vh
-  }
+.monsieur-la-doulaise-regular {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 7.5rem;
+  color: #fff;
+  text-shadow:
+    0 0 10px rgba(255,255,255,.6),
+    0 0 20px rgba(255,255,255,.4);
+}
 
-  .content-wrapper {
-    color: #000000;
-    transform: translateY(40px);
-    padding-bottom: 2rem; 
-  }
+.monsieur-la-doulaise-bold {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 3.5rem;
+  color: #fff;
+  text-shadow:
+    0 0 10px rgba(255,255,255,.6),
+    0 0 20px rgba(255,255,255,.4);
+}
 
-  .content-wrapper.animate {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 3.5s ease-in-out;
-  }
+.monsieur-la-doulaise-subtitle {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 2.2rem;
+  color: #ddd;
+  text-shadow: 0 0 8px rgba(255,255,255,.3);
+  margin-top: 1rem;
+  letter-spacing: 1px;
+  opacity: .9;
+}
 
-  .content-footer {
-    padding-top: 2rem;
-  }
+/* -------------------------
+   Section 2 — Content
+------------------------- */
+.fade-in { opacity: 0; transform: translateY(30px); transition: all 1.5s ease-in-out .5s; }
+.fade-in.animate { opacity: 1; transform: translateY(0); }
 
-  .content p,
-  .content-footer p {
-    margin-bottom: 1rem;  /* ensures spacing is always present */
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 2s ease, transform 2s ease;
-  }
+.content {
+  position: relative;
+  z-index: 2;           /* above #stars */
+  padding: 100px 20px;
+  text-align: center;
+  background: rgb(241, 191, 200);
+  color: #000;
+  min-height: 100vh;
+  overflow: hidden;
+}
 
-  .content p.animate,
-  .content-footer p.animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
+#hearts {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
 
-  @keyframes fadeSlideIn {
-    0% {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes fadeFloat {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    50% {
-      opacity: 1;
-      transform: translateY(-5px);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
+.content .content-wrapper,
+.content .content-footer {
+  position: relative;
+  z-index: 1;
+}
 
-  .monsieur-la-doulaise-signature {
-    font-family: "Monsieur La Doulaise", cursive;
-    font-size: 2rem;
-    color: #000000;
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
-    margin-bottom: 1.2rem;
-    line-height: 1.6;
-  }
+.content-wrapper { color: #000; transform: translateY(40px); padding-bottom: 2rem; }
+.content-wrapper.animate { opacity: 1; transform: translateY(0); transition: all 3.5s ease-in-out; }
 
-  #hearts {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
+.content-footer { padding-top: 2rem; }
 
-  .content .content-wrapper,
-  .content .content-footer {
-    position: relative;
-    z-index: 1;
-  }
+.content p,
+.content-footer p {
+  margin-bottom: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 2s ease, transform 2s ease;
+}
 
-  .letter-section {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 64px 20px;
-    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
-    /* Gives 3D depth to flap rotation */
-    perspective: 1200px;
-  }
+.content p.animate,
+.content-footer p.animate { opacity: 1; transform: translateY(0); }
 
-  .envelope-wrap {
-    display: grid;
-    place-items: center;
-  }
+@keyframes fadeSlideIn {
+  0% { opacity: 0; transform: translateY(40px); }
+  100%{ opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeFloat {
+  0% { opacity: 0; transform: translateY(20px); }
+  50%{ opacity: 1; transform: translateY(-5px); }
+  100%{ transform: translateY(0); }
+}
 
-  /* Reset button look */
-  .envelope {
-    --env: #ffffff;
-    --edge: #e91e63;
-    --paper: #fffdf8;
-    --shadow: rgba(0,0,0,.18);
+.monsieur-la-doulaise-signature {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-size: 2rem;
+  color: #000;
+  text-shadow: 0 0 6px rgba(255,255,255,.4);
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+}
 
-    position: relative;
-    width: min(92vw, 420px);
-    aspect-ratio: 3 / 2;
-    border: 2px solid var(--edge);
-    border-radius: 14px;
-    background: var(--env);
-    box-shadow: 0 16px 34px var(--shadow);
-    cursor: pointer;
-    outline: none;
-    overflow: hidden; /* ensures paper/flap clip nicely */
-    transform-style: preserve-3d;
-    transition: transform .35s ease;
-    appearance: none;
-  }
-  .envelope:focus-visible { box-shadow: 0 0 0 4px rgba(233,30,99,.25), 0 16px 34px var(--shadow); }
-  .envelope:hover { transform: translateY(-2px); }
-/* FRONT FACE — left & right triangles */
+/* -------------------------
+   Section 3 — Envelope Letter
+------------------------- */
+.letter-section{
+  position: relative;
+  z-index: 2;           /* above #stars */
+  isolation: isolate;   /* contain stacking for safety */
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 64px 20px;
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+  perspective: 1200px;  /* 3D depth for the flap rotation */
+}
+
+.envelope-wrap { display: grid; place-items: center; }
+
+/* Envelope button (real box so aspect-ratio works) */
+.envelope{
+  --env: #ffffff;
+  --edge: #e91e63;
+  --paper: #fffdf8;
+  --shadow: rgba(0,0,0,.18);
+
+  display: block;                 /* important: button is inline by default */
+  position: relative;
+  width: min(92vw, 420px);
+  aspect-ratio: 3 / 2;
+  border: 2px solid var(--edge);
+  border-radius: 14px;
+  background: var(--env);
+  box-shadow: 0 16px 34px var(--shadow);
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;               /* clip flap & paper nicely */
+  transform-style: preserve-3d;
+  transition: transform .35s ease;
+  appearance: none;
+}
+.envelope:hover { transform: translateY(-2px); }
+.envelope:focus-visible {
+  box-shadow: 0 0 0 4px rgba(233,30,99,.25), 0 16px 34px var(--shadow);
+}
+
+/* --- Front face: left & right triangles --- */
 .envelope .front { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 
 .envelope .front::before,
-.envelope .front::after {
+.envelope .front::after{
   content: "";
   position: absolute;
   bottom: 0;
   width: 50%;
   height: 100%;
-  /* Slight grey so it doesn't disappear against white */
   background: linear-gradient(180deg, #ffffff 0%, #f3f3f3 100%);
   box-shadow: inset 0 -1px 0 rgba(0,0,0,.06);
   filter: drop-shadow(0 1px 0 rgba(0,0,0,.04));
 }
-.envelope .front::before {
+.envelope .front::before{
   left: 0;
-  clip-path: polygon(0 100%, 100% 0, 100% 100%); /* left triangle */
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);   /* left triangle */
   border-right: 2px solid var(--edge);
 }
-.envelope .front::after {
+.envelope .front::after{
   right: 0;
-  clip-path: polygon(0 0, 100% 100%, 0 100%);   /* right triangle */
+  clip-path: polygon(0 0, 100% 100%, 0 100%);      /* right triangle */
   border-left: 2px solid var(--edge);
 }
 
-/* BOTTOM FLAP — triangle pointing up */
-.envelope::before {
+/* --- Bottom flap (upward V) --- */
+.envelope::before{
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: 0;
   height: 58%;
   background: linear-gradient(180deg, #fff 0%, #eee 100%);
   clip-path: polygon(0 100%, 50% 48%, 100% 100%);
-  z-index: 1; /* under the side triangles, above paper when closed */
+  z-index: 1;  /* under front triangles, above paper when closed */
   box-shadow: 0 -1px 0 rgba(0,0,0,.05), inset 0 -2px 6px rgba(0,0,0,.06);
 }
 
-/* CENTER SEAM (subtle) */
-.envelope::after {
+/* --- Center seam --- */
+.envelope::after{
   content: "";
   position: absolute;
   top: 50%; left: 50%;
@@ -281,25 +243,24 @@
   pointer-events: none;
 }
 
-/* Ensure depth order feels right */
-/* TOP FLAP (pink triangle that swings open) */
-.envelope .flap {
+/* --- Top flap (pink; swings open) --- */
+.envelope .flap{
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 52%;
   background: linear-gradient(180deg, #ff7aa2 0%, #e91e63 100%);
   transform-origin: top center;
   transform: rotateX(0deg);
-  z-index: 3; /* on top when closed */
+  z-index: 3;   /* on top when closed */
   clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
   border-bottom: 2px solid var(--edge);
   transition: transform .6s ease;
 }
 
-/* LETTER PAPER (the white sheet that slides up) */
-.envelope .paper {
+/* --- Letter paper (slides up on open) --- */
+.envelope .paper{
   position: absolute;
-  inset: 6% 6% 6% 6%;
+  inset: 6%;
   background: var(--paper);
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0,0,0,.08) inset;
@@ -314,30 +275,40 @@
     z-index 0s linear .6s;
   padding: 18px;
 }
+
 .envelope .paper .paper-inner { max-width: 92%; }
 .envelope .paper .greeting { color:#880e4f; font-size: 2.2rem; }
-.envelope .paper .message  { color:#4a0e27; line-height: 1.6; text-align: left; text-indent: 1.25rem;}
-.envelope .paper .sign-off { color:#880e4f;  display:block; text-align: right; margin-right: 6%; margin-top:.75rem; }
+.envelope .paper .message  { color:#4a0e27; line-height: 1.6; text-align: left; text-indent: 1.25rem; }
+.envelope .paper .sign-off { color:#880e4f; display:block; text-align: right; margin-right: 6%; margin-top:.75rem; }
 
-@media (max-width: 420px) {
-  .envelope { width: 94vw; }
-  .envelope .paper .greeting { font-size: 1.8rem; }
-  .envelope .paper .message { font-size: .95rem; }
-}
-
-/* OPEN STATES: hover/focus/JS .open */
+/* Open states: hover/focus or .open (set by JS for tap) */
 .envelope:hover .flap,
 .envelope:focus-visible .flap,
 .envelope.open .flap { transform: rotateX(-165deg); }
 
 .envelope:hover .paper,
 .envelope:focus-visible .paper,
-.envelope.open .paper {
-  transform: translateY(-6%);
+.envelope.open .paper{
+  transform: translateY(-8%);   /* slightly more lift for realism */
   opacity: 1;
-  z-index: 4; /* above front when open */
+  z-index: 4;                   /* above front while open */
+  box-shadow: 0 10px 22px rgba(0,0,0,.12); /* subtle lift shadow */
   transition:
     z-index 0s,
     transform .6s ease .1s,
     opacity .35s ease .1s;
+}
+
+/* -------------------------
+   Responsive tweaks
+------------------------- */
+@media (max-width: 420px){
+  .envelope { width: 94vw; }
+  .envelope .paper .greeting { font-size: 1.8rem; }
+  .envelope .paper .message  { font-size: .95rem; }
+}
+
+/* Fallback if a browser ignores aspect-ratio (rare) */
+@supports not (aspect-ratio: 3 / 2){
+  .envelope{ height: 280px; }
 }
