@@ -134,20 +134,61 @@ window.addEventListener("load", () => {
   });
 });
 
+// Envelope toggle (click / tap)
+(function () {
+  const env = document.getElementById('envelope');
+  if (!env) return;
+  function toggleOpen(){
+    const isOpen = env.classList.toggle('open');
+    env.setAttribute('aria-expanded', String(isOpen));
+  }
+  env.addEventListener('click', toggleOpen);
+  env.addEventListener('touchstart', e => { e.preventDefault(); toggleOpen(); }, { passive:false });
+})();
 
-(function() {
-    const env = document.getElementById('envelope');
+// Envelope toggle + alpine parallax
+// Envelope interactions + Alpine parallax
+(function () {
+  const env = document.getElementById('envelope');
+  const section = document.querySelector('.letter-section.alpine-photo');
+  const bg = section ? section.querySelector('.bg') : null;
+
+  let isOpen = false;
+
+  function setOpen(v){
+    isOpen = !!v;
     if (!env) return;
+    env.classList.toggle('open', isOpen);
+    env.setAttribute('aria-expanded', String(isOpen));
+    if (section) section.classList.toggle('envelope-open', isOpen);
+  }
 
-    function toggleOpen() {
-      const isOpen = env.classList.toggle('open');
-      env.setAttribute('aria-expanded', String(isOpen));
+  if (env) {
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+    if (isTouch) {
+      // Mobile/tablet: tap to toggle, tap outside to close
+      env.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!isOpen); });
+      document.addEventListener('click', () => setOpen(false));
+    } else {
+      // Desktop: open on hover, close on mouseleave
+      env.addEventListener('mouseenter', () => setOpen(true));
+      env.addEventListener('mouseleave', () => setOpen(false));
+      // Also allow click to toggle if someone clicks instead of hovering
+      env.addEventListener('click', () => setOpen(!isOpen));
     }
+  }
 
-    env.addEventListener('click', toggleOpen);
-    env.addEventListener('touchstart', function(e){
-      // allow quick tap without triggering simulated mouse event twice
-      e.preventDefault();
-      toggleOpen();
-    }, { passive: false });
-  })();
+  // Subtle parallax for the alpine background
+  function updateParallax() {
+    if (!section || !bg) return;
+    const r = section.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const progress = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height))); // 0..1
+    const shift = (progress - 0.5) * 60; // -30px..+30px
+    section.style.setProperty('--bg-y', `${shift}px`);
+  }
+  updateParallax();
+  window.addEventListener('scroll', updateParallax, { passive: true });
+  window.addEventListener('resize', updateParallax);
+})();
