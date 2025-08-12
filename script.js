@@ -192,3 +192,49 @@ window.addEventListener("load", () => {
   window.addEventListener('scroll', updateParallax, { passive: true });
   window.addEventListener('resize', updateParallax);
 })();
+
+(function initTypingOnce(){
+  if (window.__typingInit) return;    // guard: don't start twice
+  window.__typingInit = true;
+
+  const el = document.getElementById('typing-title');
+  if (!el) return;
+
+  const text = "A whispered vow beneath the endless sky, my heart’s devotion written in every star above…";
+  const typeSpeed = 80;     // ms per char when typing
+  const eraseSpeed = 50;    // ms per char when deleting
+  const holdAfterType = 1200;  // pause at full text
+  const holdAfterErase = 600;  // pause at empty
+  let i = 0;
+  let typing = true;
+
+  function step(){
+    if (typing) {
+      // type forward
+      el.textContent = text.slice(0, i + 1);
+      i++;
+      if (i >= text.length) {
+        typing = false;
+        setTimeout(step, holdAfterType);
+      } else {
+        setTimeout(step, typeSpeed);
+      }
+    } else {
+      // erase backward
+      el.textContent = text.slice(0, i - 1);
+      i--;
+      if (i <= 0) {
+        typing = true;
+        setTimeout(step, holdAfterErase);
+      } else {
+        setTimeout(step, eraseSpeed);
+      }
+    }
+  }
+
+  // start fresh
+  el.textContent = "";
+  i = 0;
+  typing = true;
+  step();
+})();

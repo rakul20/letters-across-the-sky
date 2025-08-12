@@ -27,7 +27,7 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
   text-shadow: 0 0 10px rgba(255,255,255,.6), 0 0 20px rgba(255,255,255,.4);
 }
 .monsieur-la-doulaise-bold {
-  font-family: "Monsieur La Doulaise", cursive; font-weight: 700; font-style: normal; font-size: 3.5rem; color: #fff;
+  font-family: "Monsieur La Doulaise", cursive; font-weight: 500; font-style: normal; font-size: 3.5rem; color: #fff;
   text-shadow: 0 0 10px rgba(255,255,255,.6), 0 0 20px rgba(255,255,255,.4);
 }
 .monsieur-la-doulaise-subtitle {
@@ -39,10 +39,23 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
 .fade-in { opacity: 0; transform: translateY(30px); transition: all 1.5s ease-in-out .5s; }
 .fade-in.animate { opacity: 1; transform: translateY(0); }
 
+#typing-title{
+  border-right: 3px solid rgba(0,0,0,.75);
+  white-space: nowrap;       /* keep it in one line; remove if you want wrapping */
+  overflow: hidden;
+  display: inline-block;
+  animation: caret-blink 1s step-end infinite;
+}
+
+@keyframes caret-blink {
+  50% { border-right-color: transparent; }
+}
+
 .content {
   position: relative; z-index: 2; padding: 100px 20px; text-align: center;
   background: rgb(238, 211, 216); color: #000; min-height: 100vh; overflow: hidden;
 }
+
 #hearts { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 .content .content-wrapper, .content .content-footer { position: relative; z-index: 1; }
 .content-wrapper { color: #000; transform: translateY(40px); padding-bottom: 2rem; }
@@ -53,7 +66,7 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
   font-weight: 400;
   font-style: normal;
   font-size: 1.6rem;
-  color: #4a0e21;
+  color: black; /* main text color */
 }
 
 .content-footer p {
@@ -134,34 +147,32 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
   z-index: 3;
 }
 
-/* ===== Envelope ===== */
+/* ===== Envelope: larger + more capacity ===== */
 .envelope{
   --env:#d3b17a; --env-hi:#e2c794; --env-lo:#b78e54;
   --edge:#6e4f25; --paper:#fffdf8; --shadow:rgba(0,0,0,.18);
-  position: relative; display:block;
-  width: min(92vw, 520px); aspect-ratio: 3/2;
-  border: 2px solid var(--edge); border-radius: 16px;
-  background: linear-gradient(180deg, var(--env-hi) 0%, var(--env) 60%, var(--env-lo) 100%);
-  box-shadow: 0 18px 38px var(--shadow);
-  overflow: hidden; transform-style: preserve-3d;
-  transition: transform .35s ease; cursor: pointer; outline: none;
-}
-.envelope:hover{ transform: translateY(-2px); }
-.envelope:focus-visible{ box-shadow: 0 0 0 4px rgba(110,79,37,.25), 0 18px 38px var(--shadow); }
 
+  position: relative; display:block;
+  width: min(96vw, 820px);        /* was 520px */
+  aspect-ratio: 4 / 3;            /* was 3 / 2 – a bit taller */
+  border: 2px solid var(--edge);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--env-hi) 0%, var(--env) 60%, var(--env-lo) 100%);
+  box-shadow: 0 22px 44px var(--shadow);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform .35s ease;
+  cursor: pointer; outline: none;
+}
+
+/* keep the lower triangle scaled automatically */
 .envelope::before{
-  content:""; position:absolute; left:0; right:0; bottom:0; height:58%;
+  content:""; position:absolute; left:0; right:0; bottom:0; height:60%;
   background:
     linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.05)),
     linear-gradient(180deg, var(--env-hi) 0%, var(--env) 70%, var(--env-lo) 100%);
-  clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+  clip-path: polygon(0 100%, 50% 46%, 100% 100%);
   z-index:1; box-shadow: 0 -1px 0 rgba(0,0,0,.1), inset 0 -2px 6px rgba(0,0,0,.08);
-}
-.envelope::after{
-  content:""; position:absolute; top:50%; left:50%;
-  width:2px; height:46%; transform: translate(-50%,0);
-  background: linear-gradient(180deg, rgba(110,79,37,.45), rgba(110,79,37,0));
-  z-index:2; pointer-events:none;
 }
 
 .left-door,.right-door{
@@ -182,45 +193,164 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
   border-bottom:2px solid var(--edge); transition: transform .6s ease .05s;
 }
 
+/* Bigger paper area, with scroll if content is long */
 .envelope .paper{
-  position:absolute; inset:6%;
+  position:absolute;
+   inset: 8% 5% 7% 5%;     
   background:
     radial-gradient(120% 120% at 10% 0%, rgba(255,255,255,.65), rgba(255,255,255,.45) 40%, rgba(255,255,255,.35) 70%),
     linear-gradient(#fefaf2, #f9f2e5);
-  border-radius: 14px;
+  border-radius: 16px;
   box-shadow: 0 8px 22px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -20px 40px rgba(153,117,68,.07);
-  transform: translateY(18%) scale(.98); opacity:0; z-index:0;
-  display:grid; place-items:center;
+  transform: translateY(12%) scale(.98);
+  opacity:0; z-index:0;
+  display:grid; place-items:start;
   transition: transform .6s ease .15s, opacity .35s ease .15s, z-index 0s linear .6s;
-  padding: 28px 26px 32px;
+  padding: 60px 26px 32px;
+
+  /* cap height and allow inner scroll on very long letters */
+  max-height: clamp(320px, 62vh, 760px);
+  overflow: hidden;
 }
-.paper .paper-inner{ max-width: 86%; margin: 0 auto; text-align: left; }
+
+.paper .paper-inner{
+  width: 100%;
+  max-width: 86%;
+  padding-top: 32px;
+  margin: 0 auto;
+  text-align: left;
+  overflow: auto;                 /* scroll inside if needed */
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100% - 12px);  /* keep a bit of bottom padding */
+}
+
+/* nicer typography at larger size */
 .letter-title{
   font-family: "Monsieur La Doulaise", cursive;
-  font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.1; margin: 2px 0 12px;
+  font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+  line-height: 1.1; margin: 2px 0 14px;
   background: linear-gradient(90deg,#b0892e,#f1d07a 55%,#b0892e);
   -webkit-background-clip:text; background-clip:text; color:transparent;
   text-shadow:0 1px 0 #fff6d9, 0 10px 24px rgba(240,190,80,.25);
 }
-.paper .message{ color:#3b2a14; font-size: clamp(1rem, 2.2vw, 1.12rem); line-height: 1.8; }
-.paper .gold{ background: linear-gradient(90deg,#b0892e,#f1d07a 60%,#b0892e); -webkit-background-clip:text; background-clip:text; color:transparent; white-space:nowrap; }
-.wax-seal{
-  display:inline-grid; place-items:center; width:48px; height:48px; margin:16px 8px 0 0; float:right;
-  border-radius:50%; background: radial-gradient(circle at 30% 30%, #b12b34 0%, #8c2026 70%); color:#ffe9d6;
-  box-shadow: inset 0 2px 4px rgba(255,255,255,.2), inset 0 -4px 8px rgba(0,0,0,.2), 0 4px 10px rgba(0,0,0,.2);
-  transform: rotate(-6deg);
+.paper .message{
+  color:#3b2a14;
+  font-size: clamp(1rem, 2.1vw, 1.18rem);
+  line-height: 1.9;
 }
 
+/* Open state: raise the paper higher and bring to top */
 .envelope:hover .left-door, .envelope.open .left-door{ transform: rotateY(-150deg); }
 .envelope:hover .right-door, .envelope.open .right-door{ transform: rotateY(150deg); }
 .envelope:hover .flap,       .envelope.open .flap      { transform: rotateX(-165deg); }
 .envelope:hover .paper,      .envelope.open .paper{
-  transform: translateY(-10%) scale(1); opacity:1; z-index:4;
-  box-shadow: 0 18px 30px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -20px 40px rgba(153,117,68,.07);
+  transform: translateY(0) scale(1);  /* was -10% */
+  opacity:1; z-index:5;
+  box-shadow: 0 22px 36px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -20px 40px rgba(153,117,68,.07);
 }
 
-/* responsive tweaks */
-@media (max-width: 480px){
-  .envelope{ width: 94vw; }
-  .paper .message{ font-size: .98rem; }
+/* Responsive */
+@media (max-width: 640px){
+  .envelope{ width: 96vw; aspect-ratio: 4 / 3; }
+  .paper{ max-height: 60vh; }
+  .paper .message{ font-size: clamp(.98rem, 4.4vw, 1.05rem); }
+}
+
+/* Section background: purple late-evening amusement park */
+.our-places{
+  position: relative;
+  min-height: 100vh;
+  padding: 64px 22px 90px;
+  background-image: url('assets/images/amusement.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;  /* subtle parallax */
+  color: #fff;
+  z-index: 1;
+}
+.our-places .overlay{
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(40,0,60,.55), rgba(20,0,35,.6));
+  z-index: 0;
+}
+.our-places h2{
+  position: relative; z-index: 1;
+  text-align: center; margin-bottom: 28px;
+  text-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+
+/* Grid */
+.cards {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 28px;
+  max-width: 1200px;
+  margin: 80px auto 0; /* pushes cards down by 80px */
+}
+
+/* Card base */
+.card{
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(0,0,0,.28);
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  background: rgba(255,255,255,.06);
+  transform: translateY(0);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.card:hover{ transform: translateY(-4px); box-shadow: 0 18px 36px rgba(0,0,0,.36); }
+
+/* Image starts hidden/dim, then reveals */
+.card img{
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.06);
+  filter: blur(2px) brightness(.6);    /* dim & blur under text */
+  opacity: .25;                        /* mostly hidden initially */
+  transition: transform .6s ease, filter .6s ease, opacity .6s ease;
+}
+
+/* Text cover shown initially */
+.card .cover{
+  position: absolute; inset: 0; z-index: 2;
+  display: grid; place-content: center;
+  padding: 18px;
+  text-align: center;
+  background: radial-gradient(120% 120% at 50% 10%, rgba(255,255,255,.12), rgba(0,0,0,.25));
+  backdrop-filter: blur(2px);
+  color: #ffeef8;
+  text-shadow: 0 2px 6px rgba(0,0,0,.65);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.card .cover h3{
+  font-weight: 600;
+  letter-spacing: .4px;
+  margin-bottom: 6px;
+}
+.card .cover p{
+  font-style: italic;
+  opacity: .95;
+}
+
+/* Reveal on hover/focus/JS toggle */
+.card:hover img,
+.card:focus-within img,
+.card.open img{
+  opacity: 1;
+  filter: none;
+  transform: scale(1.02);
+}
+.card:hover .cover,
+.card:focus-within .cover,
+.card.open .cover{
+  opacity: 0;
+  transform: translateY(6px) scale(.98);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce){
+  .card, .card img, .card .cover{ transition: none !important; }
 }
