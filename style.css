@@ -62,12 +62,13 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
 .content-wrapper.animate { opacity: 1; transform: translateY(0); transition: all 3.5s ease-in-out; }
 .content-footer { padding-top: 2rem; }
 .content p {
-  font-family: "Mea Culpa", cursive;
+  font-family: "Segoe UI", sans-serif; /* regular, easy-to-read font */
   font-weight: 400;
-  font-style: normal;
-  font-size: 1.6rem;
-  color: black; /* main text color */
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: black;
 }
+
 
 .content-footer p {
   font-family: "Monsieur La Doulaise", cursive;
@@ -229,13 +230,17 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
   font-family: "Monsieur La Doulaise", cursive;
   font-size: clamp(2.4rem, 4.6vw, 3.8rem);
   line-height: 1.1; margin: 2px 0 14px;
-  background: linear-gradient(90deg,#b0892e,#f1d07a 55%,#b0892e);
+  background: linear-gradient(90deg,#e62f47,#221e12 55%,#cc0752);
   -webkit-background-clip:text; background-clip:text; color:transparent;
   text-shadow:0 1px 0 #fff6d9, 0 10px 24px rgba(240,190,80,.25);
 }
-.paper .message{
-  color:#3b2a14;
-  font-size: clamp(1rem, 2.1vw, 1.18rem);
+
+.paper .message {
+  font-family: "Mea Culpa", cursive; /* cursive style for the letter */
+  font-weight: 400;
+  font-style: normal;
+  color: #3b2a14;
+  font-size: 1.4rem;
   line-height: 1.9;
 }
 
@@ -354,3 +359,4 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
 @media (prefers-reduced-motion: reduce){
   .card, .card img, .card .cover{ transition: none !important; }
 }
+
