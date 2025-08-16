@@ -3,20 +3,28 @@
 html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidden; }
 
 /* ---------- Section 1: Hero (night) ---------- */
-.hero {
-  position: relative; height: 100vh; width: 100%;
-  color: #fff; display: flex; justify-content: center; align-items: center; text-align: center; z-index: 1;
+.hero{
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;          /* <— important */
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
 }
 .hero-content { position: relative; z-index: 2; animation: fadeIn 3s ease-in-out; }
 .hero h1 { font-size: 3rem; margin-bottom: 1rem; letter-spacing: 2px; }
 .hero p { font-size: 1.2rem; opacity: .8; }
 #stars{
-  position: fixed;
+  position: absolute;        /* <— was fixed */
   inset: 0;
   width: 100%;
   height: 100%;
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-  z-index: -1;            /* <= was 0; push behind everything */
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -360,3 +368,44 @@ html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidd
   .card, .card img, .card .cover{ transition: none !important; }
 }
 
+/* ====== CAMP END: full-bleed animated scene ====== */
+.camp-end{
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;           /* fresh stacking context so nothing leaks in */
+  background:#1b1230;           /* fallback color while canvas boots */
+  overflow: hidden;
+}
+#camp-canvas{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display:block;
+}
+
+/* Center the title overlay and make it glow */
+.camp-overlay{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 2;                   /* above canvas */
+}
+.camp-title{
+  opacity: 0;
+  transform: translateY(12px) scale(.98);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  font-size: clamp(2.6rem, 8vw, 5.8rem);
+  color: #fff;
+  text-shadow:
+    0 0 10px rgba(255,255,255,.45),
+    0 0 26px rgba(190,160,255,.35),
+    0 0 54px rgba(160,120,255,.25);
+  letter-spacing: 1.6px;
+}
+.camp-title.show{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
