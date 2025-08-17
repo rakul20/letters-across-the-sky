@@ -1,343 +1,411 @@
-/* style.css */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body, html {
-    height: 100%;
-    font-family: 'Segoe UI', sans-serif;
-    overflow-x: hidden;
-  }
+/* ---------- Base ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; font-family: "Segoe UI", sans-serif; overflow-x: hidden; }
 
-  .hero {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 1;
-  }
-  
-  .hero-content {
-    z-index: 2;
-    position: relative;
-    animation: fadeIn 3s ease-in-out;
-  }
-  
-  .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    letter-spacing: 2px;
-  }
-  
-  .hero p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-  }
-  
-  /* Background star canvas */
-  #stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    z-index: 0;
-    pointer-events: none; 
-  }
-  
-  /* Fade-in animation */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.78); }
-    to   { opacity: 1; transform: scale(1.2); }
-  }
-  
-  .monsieur-la-doulaise-regular {
-    font-family: "Monsieur La Doulaise", cursive;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 7.5rem;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
-                 0 0 20px rgba(255, 255, 255, 0.4);
-  }
-
-  .monsieur-la-doulaise-bold {
-      font-family: "Monsieur La Doulaise", cursive;
-      font-weight: 700;
-      font-style: normal;
-      font-size: 3.5rem;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
-                    0 0 20px rgba(255, 255, 255, 0.4);
-  }  
-
-  .monsieur-la-doulaise-subtitle {
-      font-family: "Monsieur La Doulaise", cursive;
-      font-weight: 400;
-      font-style: normal;
-      font-size: 2.2rem;
-      color: #ddd;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-      margin-top: 1rem;
-      letter-spacing: 1px;
-      opacity: 0.9;
-    }
-
-    /* === Section 2: Letter Content Animation === */
-
-  .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 1.5s ease-in-out 0.5s;
-  }
-
-  .fade-in.animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .content {
-    padding: 100px 20px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
-    background: rgb(241, 191, 200);
-    color: #000000;
-    min-height: 100vh
-  }
-
-  .content-wrapper {
-    color: #000000;
-    transform: translateY(40px);
-    padding-bottom: 2rem; 
-  }
-
-  .content-wrapper.animate {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 3.5s ease-in-out;
-  }
-
-  .content-footer {
-    padding-top: 2rem;
-  }
-
-  .content p,
-  .content-footer p {
-    margin-bottom: 1rem;  /* ensures spacing is always present */
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 2s ease, transform 2s ease;
-  }
-
-  .content p.animate,
-  .content-footer p.animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @keyframes fadeSlideIn {
-    0% {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes fadeFloat {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    50% {
-      opacity: 1;
-      transform: translateY(-5px);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-
-  .monsieur-la-doulaise-signature {
-    font-family: "Monsieur La Doulaise", cursive;
-    font-size: 2rem;
-    color: #000000;
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
-    margin-bottom: 1.2rem;
-    line-height: 1.6;
-  }
-
-  #hearts {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .content .content-wrapper,
-  .content .content-footer {
-    position: relative;
-    z-index: 1;
-  }
-
-  .letter-section {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 64px 20px;
-    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
-    /* Gives 3D depth to flap rotation */
-    perspective: 1200px;
-  }
-
-  .envelope-wrap {
-    display: grid;
-    place-items: center;
-  }
-
-  /* Reset button look */
-  .envelope {
-    --env: #ffffff;
-    --edge: #e91e63;
-    --paper: #fffdf8;
-    --shadow: rgba(0,0,0,.18);
-
-    position: relative;
-    width: min(92vw, 420px);
-    aspect-ratio: 3 / 2;
-    border: 2px solid var(--edge);
-    border-radius: 14px;
-    background: var(--env);
-    box-shadow: 0 16px 34px var(--shadow);
-    cursor: pointer;
-    outline: none;
-    overflow: hidden; /* ensures paper/flap clip nicely */
-    transform-style: preserve-3d;
-    transition: transform .35s ease;
-    appearance: none;
-  }
-  .envelope:focus-visible { box-shadow: 0 0 0 4px rgba(233,30,99,.25), 0 16px 34px var(--shadow); }
-  .envelope:hover { transform: translateY(-2px); }
-/* FRONT FACE — left & right triangles */
-.envelope .front { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-
-.envelope .front::before,
-.envelope .front::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  width: 50%;
+/* ---------- Section 1: Hero (night) ---------- */
+.hero{
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;          /* <— important */
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+}
+.hero-content { position: relative; z-index: 2; animation: fadeIn 3s ease-in-out; }
+.hero h1 { font-size: 3rem; margin-bottom: 1rem; letter-spacing: 2px; }
+.hero p { font-size: 1.2rem; opacity: .8; }
+#stars{
+  position: absolute;        /* <— was fixed */
+  inset: 0;
+  width: 100%;
   height: 100%;
-  /* Slight grey so it doesn't disappear against white */
-  background: linear-gradient(180deg, #ffffff 0%, #f3f3f3 100%);
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,.06);
-  filter: drop-shadow(0 1px 0 rgba(0,0,0,.04));
-}
-.envelope .front::before {
-  left: 0;
-  clip-path: polygon(0 100%, 100% 0, 100% 100%); /* left triangle */
-  border-right: 2px solid var(--edge);
-}
-.envelope .front::after {
-  right: 0;
-  clip-path: polygon(0 0, 100% 100%, 0 100%);   /* right triangle */
-  border-left: 2px solid var(--edge);
-}
-
-/* BOTTOM FLAP — triangle pointing up */
-.envelope::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 58%;
-  background: linear-gradient(180deg, #fff 0%, #eee 100%);
-  clip-path: polygon(0 100%, 50% 48%, 100% 100%);
-  z-index: 1; /* under the side triangles, above paper when closed */
-  box-shadow: 0 -1px 0 rgba(0,0,0,.05), inset 0 -2px 6px rgba(0,0,0,.06);
-}
-
-/* CENTER SEAM (subtle) */
-.envelope::after {
-  content: "";
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 2px; height: 46%;
-  transform: translate(-50%, 0);
-  background: linear-gradient(180deg, rgba(233,30,99,.35), rgba(233,30,99,0));
-  z-index: 2;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  z-index: 0;
   pointer-events: none;
 }
 
-/* Ensure depth order feels right */
-/* TOP FLAP (pink triangle that swings open) */
-.envelope .flap {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 52%;
-  background: linear-gradient(180deg, #ff7aa2 0%, #e91e63 100%);
-  transform-origin: top center;
-  transform: rotateX(0deg);
-  z-index: 3; /* on top when closed */
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-  border-bottom: 2px solid var(--edge);
-  transition: transform .6s ease;
+/* Typography helpers */
+@keyframes fadeIn { from { opacity: 0; transform: scale(.78); } to { opacity: 1; transform: scale(1.2); } }
+.monsieur-la-doulaise-regular {
+  font-family: "Monsieur La Doulaise", cursive; font-weight: 400; font-style: normal; font-size: 7.5rem; color: #fff;
+  text-shadow: 0 0 10px rgba(255,255,255,.6), 0 0 20px rgba(255,255,255,.4);
+}
+.monsieur-la-doulaise-bold {
+  font-family: "Monsieur La Doulaise", cursive; font-weight: 500; font-style: normal; font-size: 3.5rem; color: #fff;
+  text-shadow: 0 0 10px rgba(255,255,255,.6), 0 0 20px rgba(255,255,255,.4);
+}
+.monsieur-la-doulaise-subtitle {
+  font-family: "Monsieur La Doulaise", cursive; font-weight: 400; font-style: normal; font-size: 2.2rem; color: #ddd;
+  text-shadow: 0 0 8px rgba(255,255,255,.3); margin-top: 1rem; letter-spacing: 1px; opacity: .9;
 }
 
-/* LETTER PAPER (the white sheet that slides up) */
-.envelope .paper {
-  position: absolute;
-  inset: 6% 6% 6% 6%;
-  background: var(--paper);
-  border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.08) inset;
-  transform: translateY(18%);
+/* ---------- Section 2: Content ---------- */
+.fade-in { opacity: 0; transform: translateY(30px); transition: all 1.5s ease-in-out .5s; }
+.fade-in.animate { opacity: 1; transform: translateY(0); }
+
+#typing-title{
+  border-right: 3px solid rgba(0,0,0,.75);
+  white-space: nowrap;       /* keep it in one line; remove if you want wrapping */
+  overflow: hidden;
+  display: inline-block;
+  animation: caret-blink 1s step-end infinite;
+}
+
+@keyframes caret-blink {
+  50% { border-right-color: transparent; }
+}
+
+.content {
+  position: relative; z-index: 2; padding: 100px 20px; text-align: center;
+  background: rgb(238, 211, 216); color: #000; min-height: 100vh; overflow: hidden;
+}
+
+#hearts { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.content .content-wrapper, .content .content-footer { position: relative; z-index: 1; }
+.content-wrapper { color: #000; transform: translateY(40px); padding-bottom: 2rem; }
+.content-wrapper.animate { opacity: 1; transform: translateY(0); transition: all 3.5s ease-in-out; }
+.content-footer { padding-top: 2rem; }
+.content p {
+  font-family: "Segoe UI", sans-serif; /* regular, easy-to-read font */
+  font-weight: 400;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: black;
+}
+
+
+.content-footer p {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.6rem;
+  color: #000000;
+  margin-bottom: 1rem;
   opacity: 0;
-  z-index: 0;
+  transform: translateY(20px);
+  transition: opacity 2s ease, transform 2s ease;
+}
+
+.content p.animate,
+.content-footer p.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+@keyframes fadeSlideIn { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes fadeFloat { 0% { opacity: 0; transform: translateY(20px); } 50% { opacity: 1; transform: translateY(-5px); } 100% { transform: translateY(0); } }
+.monsieur-la-doulaise-signature { font-family: "Monsieur La Doulaise", cursive; font-size: 2rem; color: #000;
+  text-shadow: 0 0 6px rgba(255,255,255,.4); margin-bottom: 1.2rem; line-height: 1.6; }
+
+/* ===== SECTION 3: Alpine evening ===== */
+.letter-section.alpine-photo{
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
   display: grid;
   place-items: center;
-  transition:
-    transform .6s ease .12s,
-    opacity .35s ease .12s,
-    z-index 0s linear .6s;
+  padding: clamp(40px, 6vw, 80px) 20px;
+  perspective: 1200px;
+  overflow: hidden;
+  z-index: 2;             /* make sure this whole section sits above stars */
+}
+
+/* Alpine photo section background */
+.alpine-photo {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Background image layer */
+.alpine-photo .bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('assets/images/mountains.png'); /* ← your uploaded image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* Warm sunset glow overlay */
+.alpine-photo .warm-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 20%, rgba(255, 180, 90, 0.35) 0%, transparent 60%);
+  mix-blend-mode: screen;
+  z-index: 1;
+}
+
+/* Soft vignette for depth */
+.alpine-photo .vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.5) 100%);
+  z-index: 2;
+}
+
+/* Envelope sits above everything */
+.alpine-photo .envelope-wrap {
+  position: relative;
+  z-index: 3;
+}
+
+/* ===== Envelope: larger + more capacity ===== */
+.envelope{
+  --env:#d3b17a; --env-hi:#e2c794; --env-lo:#b78e54;
+  --edge:#6e4f25; --paper:#fffdf8; --shadow:rgba(0,0,0,.18);
+
+  position: relative; display:block;
+  width: min(96vw, 820px);        /* was 520px */
+  aspect-ratio: 4 / 3;            /* was 3 / 2 – a bit taller */
+  border: 2px solid var(--edge);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--env-hi) 0%, var(--env) 60%, var(--env-lo) 100%);
+  box-shadow: 0 22px 44px var(--shadow);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform .35s ease;
+  cursor: pointer; outline: none;
+}
+
+/* keep the lower triangle scaled automatically */
+.envelope::before{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:60%;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.05)),
+    linear-gradient(180deg, var(--env-hi) 0%, var(--env) 70%, var(--env-lo) 100%);
+  clip-path: polygon(0 100%, 50% 46%, 100% 100%);
+  z-index:1; box-shadow: 0 -1px 0 rgba(0,0,0,.1), inset 0 -2px 6px rgba(0,0,0,.08);
+}
+
+.left-door,.right-door{
+  position:absolute; top:0; bottom:0; width:50%;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.06)),
+    linear-gradient(180deg, var(--env-hi) 0%, var(--env) 70%, var(--env-lo) 100%);
+  z-index:2; backface-visibility:hidden; transition: transform .55s ease;
+}
+.left-door{ left:0;  clip-path: polygon(0 100%, 100% 0, 100% 100%); border-right:2px solid var(--edge); transform-origin:left center; }
+.right-door{ right:0; clip-path: polygon(0 0, 100% 100%, 0 100%);   border-left:2px solid var(--edge);  transform-origin:right center; }
+
+.flap{
+  position:absolute; top:0; left:0; right:0; height:52%;
+  background: linear-gradient(180deg, #d9b77f 0%, #bf9456 100%);
+  transform-origin: top center; transform: rotateX(0deg);
+  z-index:3; clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  border-bottom:2px solid var(--edge); transition: transform .6s ease .05s;
+}
+
+/* Bigger paper area, with scroll if content is long */
+.envelope .paper{
+  position:absolute;
+   inset: 8% 5% 7% 5%;     
+  background:
+    radial-gradient(120% 120% at 10% 0%, rgba(255,255,255,.65), rgba(255,255,255,.45) 40%, rgba(255,255,255,.35) 70%),
+    linear-gradient(#fefaf2, #f9f2e5);
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -20px 40px rgba(153,117,68,.07);
+  transform: translateY(12%) scale(.98);
+  opacity:0; z-index:0;
+  display:grid; place-items:start;
+  transition: transform .6s ease .15s, opacity .35s ease .15s, z-index 0s linear .6s;
+  padding: 60px 26px 32px;
+
+  /* cap height and allow inner scroll on very long letters */
+  max-height: clamp(320px, 62vh, 760px);
+  overflow: hidden;
+}
+
+.paper .paper-inner{
+  width: 100%;
+  max-width: 86%;
+  padding-top: 32px;
+  margin: 0 auto;
+  text-align: left;
+  overflow: auto;                 /* scroll inside if needed */
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100% - 12px);  /* keep a bit of bottom padding */
+}
+
+/* nicer typography at larger size */
+.letter-title{
+  font-family: "Monsieur La Doulaise", cursive;
+  font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+  line-height: 1.1; margin: 2px 0 14px;
+  background: linear-gradient(90deg,#e62f47,#221e12 55%,#cc0752);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 1px 0 #fff6d9, 0 10px 24px rgba(240,190,80,.25);
+}
+
+.paper .message {
+  font-family: "Mea Culpa", cursive; /* cursive style for the letter */
+  font-weight: 400;
+  font-style: normal;
+  color: #3b2a14;
+  font-size: 1.4rem;
+  line-height: 1.9;
+}
+
+/* Open state: raise the paper higher and bring to top */
+.envelope:hover .left-door, .envelope.open .left-door{ transform: rotateY(-150deg); }
+.envelope:hover .right-door, .envelope.open .right-door{ transform: rotateY(150deg); }
+.envelope:hover .flap,       .envelope.open .flap      { transform: rotateX(-165deg); }
+.envelope:hover .paper,      .envelope.open .paper{
+  transform: translateY(0) scale(1);  /* was -10% */
+  opacity:1; z-index:5;
+  box-shadow: 0 22px 36px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -20px 40px rgba(153,117,68,.07);
+}
+
+/* Responsive */
+@media (max-width: 640px){
+  .envelope{ width: 96vw; aspect-ratio: 4 / 3; }
+  .paper{ max-height: 60vh; }
+  .paper .message{ font-size: clamp(.98rem, 4.4vw, 1.05rem); }
+}
+
+/* Section background: purple late-evening amusement park */
+.our-places{
+  position: relative;
+  min-height: 100vh;
+  padding: 64px 22px 90px;
+  background-image: url('assets/images/amusement.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;  /* subtle parallax */
+  color: #fff;
+  z-index: 1;
+}
+.our-places .overlay{
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(40,0,60,.55), rgba(20,0,35,.6));
+  z-index: 0;
+}
+.our-places h2{
+  position: relative; z-index: 1;
+  text-align: center; margin-bottom: 28px;
+  text-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+
+/* Grid */
+.cards {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 28px;
+  max-width: 1200px;
+  margin: 80px auto 0; /* pushes cards down by 80px */
+}
+
+/* Card base */
+.card{
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(0,0,0,.28);
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  background: rgba(255,255,255,.06);
+  transform: translateY(0);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.card:hover{ transform: translateY(-4px); box-shadow: 0 18px 36px rgba(0,0,0,.36); }
+
+/* Image starts hidden/dim, then reveals */
+.card img{
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.06);
+  filter: blur(2px) brightness(.6);    /* dim & blur under text */
+  opacity: .25;                        /* mostly hidden initially */
+  transition: transform .6s ease, filter .6s ease, opacity .6s ease;
+}
+
+/* Text cover shown initially */
+.card .cover{
+  position: absolute; inset: 0; z-index: 2;
+  display: grid; place-content: center;
   padding: 18px;
+  text-align: center;
+  background: radial-gradient(120% 120% at 50% 10%, rgba(255,255,255,.12), rgba(0,0,0,.25));
+  backdrop-filter: blur(2px);
+  color: #ffeef8;
+  text-shadow: 0 2px 6px rgba(0,0,0,.65);
+  transition: opacity .45s ease, transform .45s ease;
 }
-.envelope .paper .paper-inner { max-width: 92%; }
-.envelope .paper .greeting { color:#880e4f; font-size: 2.2rem; }
-.envelope .paper .message  { color:#4a0e27; line-height: 1.6; text-align: left; text-indent: 1.25rem;}
-.envelope .paper .sign-off { color:#880e4f;  display:block; text-align: right; margin-right: 6%; margin-top:.75rem; }
-
-@media (max-width: 420px) {
-  .envelope { width: 94vw; }
-  .envelope .paper .greeting { font-size: 1.8rem; }
-  .envelope .paper .message { font-size: .95rem; }
+.card .cover h3{
+  font-weight: 600;
+  letter-spacing: .4px;
+  margin-bottom: 6px;
+}
+.card .cover p{
+  font-style: italic;
+  opacity: .95;
 }
 
-/* OPEN STATES: hover/focus/JS .open */
-.envelope:hover .flap,
-.envelope:focus-visible .flap,
-.envelope.open .flap { transform: rotateX(-165deg); }
-
-.envelope:hover .paper,
-.envelope:focus-visible .paper,
-.envelope.open .paper {
-  transform: translateY(-6%);
+/* Reveal on hover/focus/JS toggle */
+.card:hover img,
+.card:focus-within img,
+.card.open img{
   opacity: 1;
-  z-index: 4; /* above front when open */
-  transition:
-    z-index 0s,
-    transform .6s ease .1s,
-    opacity .35s ease .1s;
+  filter: none;
+  transform: scale(1.02);
+}
+.card:hover .cover,
+.card:focus-within .cover,
+.card.open .cover{
+  opacity: 0;
+  transform: translateY(6px) scale(.98);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce){
+  .card, .card img, .card .cover{ transition: none !important; }
+}
+
+/* ====== CAMP END: full-bleed animated scene ====== */
+.camp-end{
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;           /* fresh stacking context so nothing leaks in */
+  background:#1b1230;           /* fallback color while canvas boots */
+  overflow: hidden;
+}
+#camp-canvas{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display:block;
+}
+
+/* Center the title overlay and make it glow */
+.camp-overlay{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 2;                   /* above canvas */
+}
+.camp-title{
+  opacity: 0;
+  transform: translateY(12px) scale(.98);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  font-size: clamp(2.6rem, 8vw, 5.8rem);
+  color: #fff;
+  text-shadow:
+    0 0 10px rgba(255,255,255,.45),
+    0 0 26px rgba(190,160,255,.35),
+    0 0 54px rgba(160,120,255,.25);
+  letter-spacing: 1.6px;
+}
+.camp-title.show{
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
