@@ -357,97 +357,209 @@ window.addEventListener("load", () => {
     ctx.fillStyle = g; ctx.fillRect(0, H*0.65, W, H*0.35);
   }
 
-  function drawTentVanFire(t, W, H){
-    const baseY = H*0.66;
-    const fireX = W*0.38, fireY = H*0.68;
+// ----- helpers -----
+function roundedRect(ctx, x, y, w, h, r) {
+  const rr = Math.min(r, w * 0.5, h * 0.5);
+  ctx.beginPath();
+  ctx.moveTo(x + rr, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rr);
+  ctx.arcTo(x + w, y + h, x, y + h, rr);
+  ctx.arcTo(x, y + h, x, y, rr);
+  ctx.arcTo(x, y, x + w, y, rr);
+  ctx.closePath();
+}
 
-    // VAN (simple silhouette with cabin glow)
-    const vanX = W*0.18, vanY = baseY-18, vanW = Math.min(220, W*0.22), vanH = vanW*0.45;
-    ctx.fillStyle = '#0c0817';
-    ctx.fillRect(vanX, vanY-vanH, vanW, vanH);
-    ctx.beginPath(); ctx.arc(vanX+vanW*0.82, vanY-vanH*0.15, vanH*0.22, 0, Math.PI*2); ctx.fill(); // wheel
-    ctx.beginPath(); ctx.arc(vanX+vanW*0.18, vanY-vanH*0.15, vanH*0.22, 0, Math.PI*2); ctx.fill();
-    // cabin glow
-    const glow = ctx.createRadialGradient(vanX+vanW*0.35, vanY-vanH*0.55, 0, vanX+vanW*0.35, vanY-vanH*0.55, vanW*0.5);
-    glow.addColorStop(0,'rgba(255,225,170,0.20)'); glow.addColorStop(1,'rgba(255,225,170,0)');
-    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(vanX+vanW*0.35, vanY-vanH*0.55, vanW*0.55, 0, Math.PI*2); ctx.fill();
+function softGlow(ctx, x, y, r, rgba) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, rgba.replace('ALPHA', '0.35'));
+  g.addColorStop(1, rgba.replace('ALPHA', '0'));
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+}
 
-    // TENT (triangular)
-    const tentX = W*0.62, tentY = baseY-2;
-    const tentW = Math.min(240, W*0.24), tentH = tentW*0.62;
-    ctx.fillStyle = '#6b4a20';
-    ctx.beginPath(); ctx.moveTo(tentX, tentY - tentH);
-    ctx.lineTo(tentX - tentW/2, tentY);
-    ctx.lineTo(tentX + tentW/2, tentY); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#523819';
-    ctx.beginPath(); ctx.moveTo(tentX, tentY - tentH);
-    ctx.lineTo(tentX, tentY); ctx.lineTo(tentX + tentW/2, tentY);
-    ctx.closePath(); ctx.fill();
+// ----- detailed pieces -----
+function drawVan(ctx, W, H, baseY, t) {
+  const x = W * 0.17, w = Math.min(260, W * 0.26), h = w * 0.46;
+  const y = baseY - h - 6;
 
-    // Interior warm glow
-    const tentGlow = ctx.createRadialGradient(tentX - tentW*0.08, tentY - tentH*0.24, 4, tentX - tentW*0.08, tentY - tentH*0.24, tentW*0.7);
-    tentGlow.addColorStop(0, 'rgba(255,225,160,0.35)');
-    tentGlow.addColorStop(1, 'rgba(255,225,160,0)');
-    ctx.fillStyle = tentGlow; ctx.beginPath();
-    ctx.arc(tentX - tentW*0.08, tentY - tentH*0.24, tentW*0.74, 0, Math.PI*2); ctx.fill();
+  // body
+  ctx.save();
+  ctx.fillStyle = '#12101a';
+  roundedRect(ctx, x, y, w, h, 12); ctx.fill();
 
-    // Campfire log
-    ctx.strokeStyle = '#3a2a12'; ctx.lineWidth = 10;
-    ctx.beginPath(); ctx.moveTo(fireX-48, fireY+14); ctx.lineTo(fireX+48, fireY+14); ctx.stroke();
+  // belt line
+  ctx.fillStyle = '#0d0b14';
+  roundedRect(ctx, x, y + h * 0.55, w, h * 0.45, 12); ctx.fill();
 
-    // Flames (animated)
-    const flick = Math.sin(t*8)*0.5 + Math.sin(t*2.1)*0.3;
-    const flameH = 46 + flick*10, flameW = 28 + flick*4;
-    function flame(color, alpha, scale){
-      ctx.globalAlpha = alpha; ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.moveTo(fireX, fireY - flameH*scale);
-      ctx.bezierCurveTo(fireX - flameW*scale, fireY - flameH*0.5*scale, fireX - flameW*0.6*scale, fireY, fireX, fireY);
-      ctx.bezierCurveTo(fireX + flameW*0.6*scale, fireY, fireX + flameW*scale, fireY - flameH*0.5*scale, fireX, fireY - flameH*scale);
-      ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
-    }
-    flame('#ffefb2', 0.9, 0.6);
-    flame('#ffd071', 0.85, 0.9);
-    flame('#ff944f', 0.75, 1.15);
-    flame('#ff6a39', 0.6, 1.35);
+  // side window glow
+  const winX = x + w * 0.42, winY = y + h * 0.18, winW = w * 0.42, winH = h * 0.35;
+  const g = ctx.createLinearGradient(winX, winY, winX, winY + winH);
+  g.addColorStop(0, 'rgba(255,235,200,0.18)');
+  g.addColorStop(1, 'rgba(255,235,200,0.05)');
+  ctx.fillStyle = g; roundedRect(ctx, winX, winY, winW, winH, 8); ctx.fill();
 
-    // Embers
-    if (!embers[0].x){
-      embers.forEach(e => resetEmber(e, canvas.clientWidth, canvas.clientHeight));
-    }
-    embers.forEach(e=>{
-      e.y -= e.vy;
-      e.x += Math.sin(t*5 + e.seed)*0.25;
-      e.life *= 0.985;
-      if (e.life < 0.02 || e.y < baseY-120) resetEmber(e, canvas.clientWidth, canvas.clientHeight);
-      ctx.globalAlpha = e.life; ctx.fillStyle = '#ffd071';
-      ctx.beginPath(); ctx.arc(e.x, e.y, e.r, 0, Math.PI*2); ctx.fill();
-      ctx.globalAlpha = 1;
-    });
+  // small cabin window
+  const w2 = w * 0.18, h2 = h * 0.26;
+  const g2 = ctx.createLinearGradient(x + w * 0.08, y + h * 0.24, x + w * 0.08, y + h * 0.24 + h2);
+  g2.addColorStop(0, 'rgba(255,235,200,0.22)');
+  g2.addColorStop(1, 'rgba(255,235,200,0.06)');
+  ctx.fillStyle = g2; roundedRect(ctx, x + w * 0.08, y + h * 0.24, w2, h2, 6); ctx.fill();
 
-    // Couple (silhouettes)
-    const youX = W*0.46;
-    ctx.fillStyle = '#0a0714';
-    // you
-    ctx.beginPath(); ctx.ellipse(youX, baseY, 26, 18, 0, 0, Math.PI*2); ctx.fill();            // seat / base
-    ctx.beginPath(); ctx.arc(youX-8, baseY-28, 10, 0, Math.PI*2); ctx.fill();                 // head
-    ctx.fillRect(youX-18, baseY+2, 36, 6);                                                    // plank shadow
-    // her
-    const herX = W*0.49;
+  // roof rack
+  ctx.strokeStyle = '#0b0a12'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(x + 10, y - 8); ctx.lineTo(x + w - 10, y - 8); ctx.stroke();
+  ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(x + w * 0.33, y - 14); ctx.lineTo(x + w * 0.67, y - 14); ctx.stroke();
+
+  // wheels
+  const wy = y + h - 4, r1 = h * 0.18, r2 = h * 0.18;
+  ctx.fillStyle = '#07060c';
+  ctx.beginPath(); ctx.arc(x + w * 0.23, wy, r1, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x + w * 0.78, wy, r2, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#171422';
+  ctx.beginPath(); ctx.arc(x + w * 0.23, wy, r1 * 0.4, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x + w * 0.78, wy, r2 * 0.4, 0, Math.PI * 2); ctx.fill();
+
+  // faint interior glow (breathing)
+  const breathe = 0.5 + 0.5 * Math.sin(t * 1.4);
+  softGlow(ctx, x + w * 0.35, y + h * 0.35, w * 0.7, `rgba(255,225,170,ALPHA)`);
+  ctx.globalAlpha = 0.15 * breathe;
+  softGlow(ctx, x + w * 0.35, y + h * 0.35, w * 0.9, `rgba(255,225,170,ALPHA)`);
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function drawTent(ctx, W, H, baseY) {
+  const tx = W * 0.63, tw = Math.min(260, W * 0.26), th = tw * 0.62, ty = baseY - 2;
+
+  // body (two planes)
+  const fabric1 = ctx.createLinearGradient(tx - tw / 2, ty - th, tx - tw / 2, ty);
+  fabric1.addColorStop(0, '#8d6a2b'); fabric1.addColorStop(1, '#5b3f17');
+  ctx.fillStyle = fabric1;
+  ctx.beginPath(); ctx.moveTo(tx, ty - th); ctx.lineTo(tx - tw / 2, ty); ctx.lineTo(tx, ty); ctx.closePath(); ctx.fill();
+
+  const fabric2 = ctx.createLinearGradient(tx, ty - th, tx, ty);
+  fabric2.addColorStop(0, '#a97a31'); fabric2.addColorStop(1, '#6c4a1b');
+  ctx.fillStyle = fabric2;
+  ctx.beginPath(); ctx.moveTo(tx, ty - th); ctx.lineTo(tx, ty); ctx.lineTo(tx + tw / 2, ty); ctx.closePath(); ctx.fill();
+
+  // center seam + door flap
+  ctx.strokeStyle = 'rgba(30,20,10,0.55)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(tx, ty - th + 6); ctx.lineTo(tx, ty - 6); ctx.stroke();
+
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.beginPath(); ctx.moveTo(tx, ty - th + th * 0.35);
+  ctx.lineTo(tx + tw * 0.18, ty - th * 0.12);
+  ctx.lineTo(tx, ty - th * 0.12);
+  ctx.closePath(); ctx.fill();
+
+  // guy lines + stakes
+  ctx.strokeStyle = 'rgba(40,28,14,0.65)'; ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(tx - tw * 0.42, ty - th * 0.15); ctx.lineTo(tx - tw * 0.55, ty + 10);
+  ctx.moveTo(tx + tw * 0.42, ty - th * 0.15); ctx.lineTo(tx + tw * 0.55, ty + 10);
+  ctx.stroke();
+  ctx.fillStyle = '#2b1c0b';
+  ctx.fillRect(tx - tw * 0.56, ty + 8, 6, 4);
+  ctx.fillRect(tx + tw * 0.50, ty + 8, 6, 4);
+
+  // interior warm glow
+  softGlow(ctx, tx - tw * 0.08, ty - th * 0.22, tw * 0.8, 'rgba(255,225,160,ALPHA)');
+}
+
+function drawFire(ctx, t, W, H, baseY, embers) {
+  const x = W * 0.38, y = H * 0.68;
+
+  // crossed logs
+  ctx.strokeStyle = '#3b2912'; ctx.lineWidth = 10; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x - 42, y + 16); ctx.lineTo(x + 40, y + 8); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x - 10, y + 12); ctx.lineTo(x + 56, y + 20); ctx.stroke();
+
+  // flames
+  const flick = Math.sin(t * 8) * 0.5 + Math.sin(t * 2.1) * 0.3;
+  const h = 48 + flick * 10, w = 28 + flick * 4;
+  function flame(color, a, s) {
+    ctx.globalAlpha = a; ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.moveTo(herX, baseY-6);
-    ctx.quadraticCurveTo(herX+16, baseY-2, herX+18, baseY+16);
-    ctx.lineTo(herX-18, baseY+16);
-    ctx.quadraticCurveTo(herX-16, baseY-2, herX, baseY-6);
-    ctx.closePath(); ctx.fill();
-    ctx.beginPath(); ctx.arc(herX+10, baseY-30, 10, 0, Math.PI*2); ctx.fill();               // head
-    ctx.beginPath(); ctx.ellipse(herX+14, baseY-26, 10, 6, 0, 0, Math.PI*2); ctx.fill();      // hair bun
-    // Cozy light around the fire
-    const cozy = ctx.createRadialGradient(fireX, fireY, 0, fireX, fireY, 170);
-    cozy.addColorStop(0, 'rgba(255,170,100,0.18)');
-    cozy.addColorStop(1, 'rgba(255,170,100,0)');
-    ctx.fillStyle = cozy; ctx.beginPath(); ctx.arc(fireX, fireY, 170, 0, Math.PI*2); ctx.fill();
+    ctx.moveTo(x, y - h * s);
+    ctx.bezierCurveTo(x - w * s, y - h * 0.55 * s, x - w * 0.6 * s, y, x, y);
+    ctx.bezierCurveTo(x + w * 0.6 * s, y, x + w * s, y - h * 0.55 * s, x, y - h * s);
+    ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
   }
+  flame('#ffefb8', 0.90, 0.60);
+  flame('#ffd07a', 0.85, 0.92);
+  flame('#ff984f', 0.75, 1.18);
+  flame('#ff6a3b', 0.60, 1.36);
+
+  // embers
+  if (!embers.initialized) {
+    embers.list = Array.from({ length: 50 }, () => ({}));
+    embers.initialized = true;
+  }
+  embers.list.forEach((e) => {
+    if (!e.life) {
+      e.x = x + (Math.random() * 18 - 9);
+      e.y = y - 2;
+      e.r = Math.random() * 1.8 + 0.7;
+      e.vy = Math.random() * 0.8 + 0.6;
+      e.life = 0.9;
+      e.seed = Math.random() * 10;
+    }
+    e.y -= e.vy;
+    e.x += Math.sin(t * 5 + e.seed) * 0.25;
+    e.life *= 0.985;
+    ctx.globalAlpha = e.life;
+    ctx.fillStyle = '#ffd07a';
+    ctx.beginPath(); ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2); ctx.fill();
+    if (e.life < 0.02) e.life = 0;
+  });
+  ctx.globalAlpha = 1;
+
+  // cozy glow
+  softGlow(ctx, x, y, 180, 'rgba(255,170,100,ALPHA)');
+}
+
+function drawCouple(ctx, W, H, baseY) {
+  const youX = W * 0.46, herX = W * 0.49, y = baseY;
+
+  // blanket
+  ctx.fillStyle = 'rgba(20,15,35,0.8)';
+  ctx.beginPath(); ctx.moveTo(youX - 70, y + 16); ctx.quadraticCurveTo(youX, y + 32, herX + 80, y + 18);
+  ctx.lineTo(herX + 70, y + 28); ctx.quadraticCurveTo(youX, y + 44, youX - 80, y + 30); ctx.closePath();
+  ctx.fill();
+
+  // bodies (silhouette)
+  ctx.fillStyle = '#09060f';
+  // you
+  ctx.beginPath(); ctx.ellipse(youX - 6, y + 4, 28, 20, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(youX - 16, y - 26, 10, 0, Math.PI * 2); ctx.fill(); // head
+  // her, leaning on your shoulder
+  ctx.beginPath(); ctx.ellipse(herX + 6, y + 6, 30, 20, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(herX, y - 26, 10, 0, Math.PI * 2); ctx.fill();
+  // hair bun
+  ctx.beginPath(); ctx.ellipse(herX + 6, y - 30, 9, 6, 0, 0, Math.PI * 2); ctx.fill();
+
+  // hands joined
+  ctx.strokeStyle = '#09060f'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(youX - 4, y - 6); ctx.lineTo(herX + 2, y - 6); ctx.stroke();
+}
+
+// ----- orchestrator (replaces drawTentVanFire) -----
+function drawCampScene(t, W, H) {
+  const baseY = H * 0.66;
+
+  // ground shadow band where everyone sits
+  const g = ctx.createLinearGradient(0, baseY - 30, 0, baseY + 60);
+  g.addColorStop(0, 'rgba(10,7,18,0)');
+  g.addColorStop(1, 'rgba(10,7,18,0.55)');
+  ctx.fillStyle = g; ctx.fillRect(0, baseY - 30, W, 90);
+
+  drawVan(ctx, W, H, baseY, t);
+  drawTent(ctx, W, H, baseY);
+  drawCouple(ctx, W, H, baseY);
+  drawFire(ctx, t, W, H, baseY, drawCampScene._embers || (drawCampScene._embers = {}));
+}
+
 
   function frame(ts){
     const t = ts/1000;
@@ -466,7 +578,7 @@ window.addEventListener("load", () => {
 
     // Ground + scene elements
     drawGround(W, H);
-    drawTentVanFire(t, W, H);
+    drawCampScene(t, W, H);
 
     // Fade in the title after a few seconds
     const title = document.querySelector('.camp-title');
